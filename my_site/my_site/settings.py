@@ -117,3 +117,8 @@ STATIC_URL = 'static/'
 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+# После успешного входа отправляем на главную страницу
+LOGIN_REDIRECT_URL = 'ads:index'
+# Если неавторизованный пользователь пытается зайти туда, куда нельзя, отправляем его сюда
+LOGIN_URL = 'ads:login'

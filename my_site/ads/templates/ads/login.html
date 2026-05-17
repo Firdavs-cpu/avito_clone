@@ -1,0 +1,24 @@
+{% extends 'ads/base.html' %}
+
+{% block title %}Вход — Авито Клон{% endblock %}
+
+{% block content %}
+<div style="max-width: 400px; margin: 40px auto; background: #fff; padding: 30px; border-radius: 8px; border: 1px solid #e2e2e2;">
+    <h2 style="margin-bottom: 20px; text-align: center;">Войти на сайт</h2>
+    
+    <!-- Важно: для отправки данных используем метод POST -->
+    <form method="post">
+        <!-- Защита Django от подделки запросов (пишется всегда внутри форм) -->
+        {% csrf_token %}
+        
+        <!-- Django автоматически сгенерирует поля формы в виде параграфов <p> -->
+        {{ form.as_p }}
+        
+        <button type="submit" class="btn-primary" style="width: 100%; border: none; margin-top: 15px; cursor: pointer;">Войти</button>
+    </form>
+    
+    <p style="margin-top: 20px; text-align: center; font-size: 14px; color: #595959;">
+        Нет аккаунта? <a href="{% url 'ads:register' %}" style="color: #00aa63; text-decoration: none;">Зарегистрироваться</a>
+    </p>
+</div>
+{% endblock %}
