@@ -3,9 +3,31 @@
 {% block title %}Главная страница — Объявления{% endblock %}
 
 {% block content %}
-<h2 style="margin-bottom: 24px;">Все объявления</h2>
+<h2 style="margin-bottom: 20px;">Все объявления</h2>
 
-<!-- Главная сетка -->
+<!-- Блок категорий -->
+<div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 30px; border-bottom: 1px solid #e2e2e2; padding-bottom: 15px;">
+    <!-- Кнопка "Все категории" -->
+    <a href="{% url 'ads:index' %}" 
+       style="padding: 8px 16px; border-radius: 20px; text-decoration: none; font-size: 14px; 
+              {% if not current_category %} background-color: #00aa63; color: white; {% else %} background-color: #eaeaea; color: #2c2c2c; {% endif %}">
+        Все
+    </a>
+
+    <!-- Перебираем все категории из базы данных -->
+    {% for cat in categories %}
+        <!-- При клике ссылка ведет на главную, но добавляет в хвост ?category=слаг -->
+        <a href="{% url 'ads:index' %}?category={{ cat.slug }}" 
+           style="padding: 8px 16px; border-radius: 20px; text-decoration: none; font-size: 14px; transition: background 0.2s;
+                  {% if current_category == cat.slug %} background-color: #00aa63; color: white; {% else %} background-color: #eaeaea; color: #2c2c2c; {% endif %}">
+            {{ cat.name }}
+        </a>
+    {% endfor %}
+</div>
+
+...
+
+
 <div class="ads-grid">
     {% for ad in ads %}
     <!-- ОБЕРНУЛИ ВСЮ КАРТОЧКУ В ССЫЛКУ: text-decoration: none и color: inherit нужны, чтобы текст не стал синим и подчеркнутым -->

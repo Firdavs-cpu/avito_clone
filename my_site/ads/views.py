@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import AD, AdImage
+from .models import AD, AdImage, Category
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
 from django.views import generic
@@ -9,8 +9,15 @@ from django.forms import inlineformset_factory
 
 def index(request):
     all_ads = AD.objects.filter(is_active=True).select_related('author', 'category').prefetch_related('images').order_by('-created_at')
+    category_slug = request.GET.get('category')
+    if category_slug:
+        all_ads = all_ads.filter(category__slug=category_slug)
+
+    categories = Category.objects.all()
     context = {
-        'ads': all_ads
+        'ads': all_ads,
+        'categories': categories,
+        'current_category': category_slug
     }
     # Указываем путь 'ads/index.html' вместо просто 'index.html'
     return render(request, 'ads/index.html', context)
