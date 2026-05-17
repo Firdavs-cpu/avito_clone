@@ -1,18 +1,23 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="ru">
-    <header class="header">
-            <link rel="stylesheet" href="{% static 'ads/css/style.css' %}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Авито Клон{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'ads/css/style.css' %}">
+</head>
+<body>
 
+    <header class="header">
         <div class="container header-content">
             <a class="logo" href="/">Авито Клон</a>
             
             <div style="display: flex; align-items: center; gap: 20px;">
-                <!-- Если пользователь вошел на сайт -->
+                <!-- Если пользователь ВОШЕЛ на сайт -->
                 {% if user.is_authenticated %}
                     <span style="font-size: 14px; color: #595959;">Привет, <strong>{{ user.username }}</strong>!</span>
                     
-                    <!-- ИСПРАВЛЕНО: Кнопка Выйти теперь оформлена как безопасная POST-форма -->
                     <form action="{% url 'ads:logout' %}" method="post" style="margin: 0; display: inline;">
                         {% csrf_token %}
                         <button type="submit" style="background: none; border: none; color: #ff3333; padding: 0; cursor: pointer; font-size: 14px; font-family: inherit;">
@@ -20,12 +25,15 @@
                         </button>
                     </form>
                     
-                    <a href="#" class="btn-primary">+ Разместить объявление</a>
+                    <!-- ИСПРАВЛЕНО: Теперь авторизованный пользователь точно идёт на форму создания -->
+                    <a href="{% url 'ads:ad_create' %}" class="btn-primary">+ Разместить объявление</a>
                 
-                <!-- Если пользователь гость -->
+                <!-- Если пользователь ГОСТЬ -->
                 {% else %}
                     <a href="{% url 'ads:login' %}" style="color: #2c2c2c; text-decoration: none; font-size: 14px;">Войти</a>
                     <a href="{% url 'ads:register' %}" style="color: #00aa63; text-decoration: none; font-size: 14px;">Регистрация</a>
+                    
+                    <!-- ИСПРАВЛЕНО: Гостя кнопка сначала ведёт на авторизацию -->
                     <a href="{% url 'ads:login' %}" class="btn-primary">+ Разместить объявление</a>
                 {% endif %}
             </div>
