@@ -20,7 +20,6 @@ class AD(models.Model):
     title = models.CharField(max_length=100, verbose_name='Название товара')
     description = models.TextField(verbose_name='Описание')
     price = models.PositiveIntegerField(verbose_name='Цена (Руб).')
-    image = models.ImageField(upload_to='ads_images/', blank=True, null=True, verbose_name="Фотография")
     is_active = models.BooleanField(default=True, verbose_name="Активно (не продано)")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата публикации")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Дата обновления")
@@ -33,4 +32,15 @@ class AD(models.Model):
     def __str__(self):
         return self.title
 
+class AdImage(models.Model):
+    ad = models.ForeignKey(AD, on_delete=models.CASCADE, related_name='images', verbose_name='Обявление')
+    image = models.ImageField(upload_to='ads_gallery/', verbose_name='Изображение')
+
+
+    class Meta:
+        verbose_name = "Фотография объявления"
+        verbose_name_plural = "Фотографии объявлений"
+
+    def __str__(self):
+        return f"Фото для {self.ad.title}"
 

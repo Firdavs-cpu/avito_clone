@@ -1,0 +1,38 @@
+{% extends 'ads/base.html' %}
+
+{% block title %}Главная страница — Объявления{% endblock %}
+
+{% block content %}
+<h2 style="margin-bottom: 24px;">Все объявления</h2>
+
+<!-- Главная сетка -->
+<div class="ads-grid">
+    {% for ad in ads %}
+    <div class="card-ad">
+        
+        <!-- Картинка всегда жестко сверху -->
+        {% if ad.images.all %}
+            <img src="{{ ad.images.first.image.url }}" class="ad-img-preview" alt="{{ ad.title }}">
+        {% else %}
+            <div class="no-photo">Нет фото</div>
+        {% endif %}
+
+        <!-- Текст под картинкой -->
+        <div class="card-body">
+            <span class="category-badge">{{ ad.category.name }}</span>
+            <h3 class="card-title">{{ ad.title }}</h3>
+            <div class="card-price">{{ ad.price }} ₽</div>
+            <p class="card-text">{{ ad.description }}</p>
+        </div>
+        
+        <!-- Подвал карточки -->
+        <div class="card-footer">
+            <span>👤 {{ ad.author.username }}</span>
+            <span>📅 {{ ad.created_at|date:"d.m.Y" }}</span>
+        </div>
+    </div>
+    {% empty %}
+    <p>Объявлений пока нет.</p>
+    {% endfor %}
+</div>
+{% endblock %}
