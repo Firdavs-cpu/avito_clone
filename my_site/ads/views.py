@@ -6,6 +6,8 @@ from django.views import generic
 from django.contrib.auth.decorators import login_required # Защита от гостей
 from .forms import AdForm
 from django.forms import inlineformset_factory
+from django.views.static import serve  # ИСПРАВЛЕНО: Импортируем встроенный обработчик файлов
+from django.urls import re_path       # Импортируем обработчик регулярных выражений
 
 def index(request):
     all_ads = AD.objects.filter(is_active=True).select_related('author', 'category').prefetch_related('images').order_by('-created_at')
